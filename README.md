@@ -24,7 +24,7 @@
 #### Frontend
 
 * React
-* Next.js -> framework to do server rendering , pagination, overall layout, routing, bundling and tooling
+* Next.js -> initial tooling and bundling, routing, framework to do server rendering , pagination, overall layout
 * Apollo Client -> manage local state with graphQL, caching, local state
 
 #### Backend
@@ -32,3 +32,9 @@
 * MySQL
 * Prisma -> database interface layer, GraphQL layer
 * GraphQL Yoga -> backend processing layer before store into database
+
+### First Page
+
+* pages are just js files
+* create `index.js` file inside the `pages` folder
+* Add code for react first component
