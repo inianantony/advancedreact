@@ -37,4 +37,4 @@
 
 * pages are just js files
 * create `index.js` file inside the `pages` folder
-* Add code for react first component
+* Add code for react first component and page by following the git commit
