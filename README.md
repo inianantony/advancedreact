@@ -38,3 +38,13 @@
 * pages are just js files
 * create `index.js` file inside the `pages` folder
 * Add code for react first component and page by following the git commit
+
+### Create account in Prisma
+
+* create an account in prisma https://app.prisma.io/
+* globally install prisma `npm i -g prisma`
+* `prisma login` and grant permission
+* `prisma init` inside the backend folder
+* Choose demo server and the region, also give a service name and stage as `dev`. choose `dont generate` for the programming language
+* prisma will auto download the `prisma.yml` file and the `datamodel` file
+* Update the yml file and datamodel.prisma file according to the commit
