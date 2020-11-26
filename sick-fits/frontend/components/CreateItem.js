@@ -7,7 +7,7 @@ import Error from './ErrorMessage'
 import Router from 'next/router'
 
 const CREATE_ITEM_MUTATION = gql`
-    mutation createItemMutation($title: String!, $description: String!, $price: Int!, $image: String, $largeImage: String) {
+    mutation CREATE_ITEM_MUTATION($title: String!, $description: String!, $price: Int!, $image: String, $largeImage: String) {
         createItem(
             title: $title
             description: $description
