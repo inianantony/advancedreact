@@ -38,6 +38,7 @@
 * pages are just js files
 * create `index.js` file inside the `pages` folder
 * Add code for react first component and page by following the git commit
+* The below steps will help in creating accounts in 3rd party services which are needed in the application at various steps
 
 ### Create account in Prisma
 
