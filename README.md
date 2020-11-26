@@ -48,3 +48,12 @@
 * Choose demo server and the region, also give a service name and stage as `dev`. choose `dont generate` for the programming language
 * prisma will auto download the `prisma.yml` file and the `datamodel` file
 * Update the yml file and datamodel.prisma file according to the commit
+
+### Upload image to cloudinary.com
+
+* Create an account in cloudinary.com
+* Go to settings -> Upload -> Add upload preset
+* Give upload preset name and folder name as sickfits and set signed mode as unsigned
+* On the upload manipulations tab -> set incoming transformation , resize width as 500 & Format quality as auto
+* Set eager transformation resize width as 1000 & Format quality as auto
+  
