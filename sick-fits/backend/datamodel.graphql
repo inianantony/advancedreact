@@ -11,4 +11,6 @@ type Item{
   image:String
   largeImage:String
   price: Int!
+  updatedAt: DateTime @updatedAt
+  createdAt: DateTime @createdAt
 }
