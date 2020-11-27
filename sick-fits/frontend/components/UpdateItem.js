@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Query,Mutation } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Form from './styles/Form';
 import formatMoney from '../lib/formatMoney';
@@ -40,24 +40,24 @@ export default class UpdateItem extends Component {
         const val = type == 'number' ? parseFloat(value) : value;
         this.setState({ [name]: e.target.value });
     }
-    updateItem = async (e,updateFunc)=>{
+    updateItem = async (e, updateFunc) => {
         e.preventDefault();
         const res = await updateFunc({
-            variables : {
-                id : this.props.id,
+            variables: {
+                id: this.props.id,
                 ...this.state
             }
         });
     }
     render() {
-        return (<Query query={SINGLE_ITEM_QUERY} variables={{ id:this.props.id }}>
+        return (<Query query={SINGLE_ITEM_QUERY} variables={{ id: this.props.id }}>
             {({ data, loading }) => {
-                if(loading) return <p>Loading...</p>
-            if(!data.item) return <p>No Item found for {this.props.id}!</p>
+                if (loading) return <p>Loading...</p>
+                if (!data.item) return <p>No Item found for {this.props.id}!</p>
                 return (
                     <Mutation mutation={UPDATE_ITEM_MUTATION} variables={this.state}>
                         {(updateItem, { loading, error }) => (
-                            <Form onSubmit={ e =>this.updateItem(e,updateItem)}>
+                            <Form onSubmit={e => this.updateItem(e, updateItem)}>
                                 <Error error={error} />
                                 <fieldset disabled={loading} aria-busy={loading}>
                                     <label htmlFor="title">
@@ -72,7 +72,7 @@ export default class UpdateItem extends Component {
                                         Description
                                         <textarea type="description" id="description" name="description" placeholder="Enter a Description" required defaultValue={data.item.description} onChange={this.handleChange} />
                                     </label>
-                        <button type="Submit">Sav{loading ? 'ing' : 'e'} Changes</button>
+                                    <button type="Submit">Sav{loading ? 'ing' : 'e'} Changes</button>
                                 </fieldset>
                             </Form>
                         )}
@@ -84,3 +84,4 @@ export default class UpdateItem extends Component {
 }
 
 export { UPDATE_ITEM_MUTATION };
+export { SINGLE_ITEM_QUERY }
