@@ -1,10 +1,23 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { randomBytes } = require("crypto");
+const { promisify } = require("util");
+const {transport, makeANiceEmail} = require('../mail')
+
 
 const Mutations = {
     async createItem(parent, args, ctx, info) {
+        if(!ctx.request.userId){
+            throw new Error('You must be logged in!')
+        }
+        
         const item = await ctx.db.mutation.createItem({
             data: {
+                user:{
+                    connect:{
+                        id:ctx.request.userId
+                    }
+                },
                 ...args
             }
         }, info);
@@ -38,11 +51,66 @@ const Mutations = {
             }
         }, info);
         const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
-        ctx.response.cookies('token', token, {
+        ctx.response.cookie('token', token, {
             httpOnly: true,
             maxAge: 1000 * 60 * 60 * 24 * 365
         });
         return user;
+    },
+    async signin(parent, args, ctx, info) {
+        const user = await ctx.db.query.user({ where: { email: args.email } });
+        if (!user) {
+            throw new Error("Invalid Email or Password!");
+        }
+        const valid = await bcrypt.compare(args.password, user.password);
+        if (!valid) {
+            throw new Error("Invalid Email or Password!");
+        }
+        const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+        ctx.response.cookie('token', token, {
+            httpOnly: true,
+            maxAge: 1000 * 60 * 60 * 24 * 365
+        });
+        return user;
+    },
+    async signout(parent, args, ctx, info) {
+        ctx.response.clearCookie('token');
+        return { message: "bye" };
+    },
+    async requestReset(parent, args, ctx, info) {
+        const user = await ctx.db.query.user({ where: { email: args.email } });
+        if (!user) {
+            throw new Error("Invalid Email!");
+        }
+        const randomBytesPromisified = promisify(randomBytes);
+        const resetToken = (await randomBytesPromisified(20)).toString('hex');
+        const resetTokenExpiry = Date.now() + 3600000;
+        const res = await ctx.db.mutation.updateUser({where: {email:args.email}, data:{resetToken, resetTokenExpiry}});
+        console.log(res);
+        const mailResp = await transport.sendMail({
+            from: 'admin@sickfits.com',
+            to: user.email,
+            subject: "Password reset request!",
+            html: makeANiceEmail(`Your password reset token is here : \n\n <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}">Reset Password</a>`)
+        });
+        return { message: "Done" };
+    },
+    async resetPassword(parent, args, ctx, info) {
+        if(args.password !== args.confirmPassword){
+            throw new Error("Invalid Password!");
+        }
+        const [user] = await ctx.db.query.users({ where: { resetToken: args.resetToken, resetTokenExpiry_gte: Date.now()-3600000 } });
+        if (!user) {
+            throw new Error("Invalid Token or expired!");
+        }
+        const password = await bcrypt.hash(args.password, 10);
+        const updatedUser = await ctx.db.mutation.updateUser({where: {email:user.email}, data:{password, resetToken:null, resetTokenExpiry:null}});
+        const token = jwt.sign({ userId: updatedUser.id }, process.env.APP_SECRET);
+        ctx.response.cookie('token', token, {
+            httpOnly: true,
+            maxAge: 1000 * 60 * 60 * 24 * 365
+        });
+        return updatedUser;
     }
 };
 
