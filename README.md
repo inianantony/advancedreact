@@ -57,4 +57,10 @@
 * Give upload preset name and folder name as sickfits and set signed mode as unsigned
 * On the upload manipulations tab -> set incoming transformation , resize width as 500 & Format quality as auto
 * Set eager transformation resize width as 1000 & Format quality as auto
+
+### Sent a test mail using https://mailtrap.io/
+
+* Create an account in https://mailtrap.io/
+* This mail server can be used to test the email sending logic
+* Take note of the smtp server settings and update in the variables.env file
   
