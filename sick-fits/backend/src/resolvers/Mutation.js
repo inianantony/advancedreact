@@ -2,21 +2,21 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { randomBytes } = require("crypto");
 const { promisify } = require("util");
-const {transport, makeANiceEmail} = require('../mail')
+const { transport, makeANiceEmail } = require('../mail')
 const { hasPermission } = require("../utils");
 
 
 const Mutations = {
     async createItem(parent, args, ctx, info) {
-        if(!ctx.request.userId){
+        if (!ctx.request.userId) {
             throw new Error('You must be logged in!')
         }
-        
+
         const item = await ctx.db.mutation.createItem({
             data: {
-                user:{
-                    connect:{
-                        id:ctx.request.userId
+                user: {
+                    connect: {
+                        id: ctx.request.userId
                     }
                 },
                 ...args
@@ -39,7 +39,7 @@ const Mutations = {
         if (!ctx.request.userId) {
             throw new Error('Not logged in');
         }
-        
+
         const where = { id: args.id };
         const item = await ctx.db.query.item({ where }, `{
             id 
@@ -48,15 +48,15 @@ const Mutations = {
                 id 
             }
         }`);
-        
+
         const ownsIt = item.user.id === ctx.request.userId;
         const userPermissions = ctx.request.user.permissions;
         const hasPermission = userPermissions.includes("ADMIN") || userPermissions.includes("ITEMDELETE");
-        if(!ownsIt && !hasPermission) throw new Error("Un Authorized");
+        if (!ownsIt && !hasPermission) throw new Error("Un Authorized");
 
-        
-        
-        return ctx.db.mutation.deleteItem({ where }, info); 
+
+
+        return ctx.db.mutation.deleteItem({ where }, info);
     },
     async signup(parent, args, ctx, info) {
         args.email = args.email.toLowerCase();
@@ -103,7 +103,7 @@ const Mutations = {
         const randomBytesPromisified = promisify(randomBytes);
         const resetToken = (await randomBytesPromisified(20)).toString('hex');
         const resetTokenExpiry = Date.now() + 3600000;
-        const res = await ctx.db.mutation.updateUser({where: {email:args.email}, data:{resetToken, resetTokenExpiry}});
+        const res = await ctx.db.mutation.updateUser({ where: { email: args.email }, data: { resetToken, resetTokenExpiry } });
         console.log(res);
         const mailResp = await transport.sendMail({
             from: 'admin@sickfits.com',
@@ -114,15 +114,15 @@ const Mutations = {
         return { message: "Done" };
     },
     async resetPassword(parent, args, ctx, info) {
-        if(args.password !== args.confirmPassword){
+        if (args.password !== args.confirmPassword) {
             throw new Error("Invalid Password!");
         }
-        const [user] = await ctx.db.query.users({ where: { resetToken: args.resetToken, resetTokenExpiry_gte: Date.now()-3600000 } });
+        const [user] = await ctx.db.query.users({ where: { resetToken: args.resetToken, resetTokenExpiry_gte: Date.now() - 3600000 } });
         if (!user) {
             throw new Error("Invalid Token or expired!");
         }
         const password = await bcrypt.hash(args.password, 10);
-        const updatedUser = await ctx.db.mutation.updateUser({where: {email:user.email}, data:{password, resetToken:null, resetTokenExpiry:null}});
+        const updatedUser = await ctx.db.mutation.updateUser({ where: { email: user.email }, data: { password, resetToken: null, resetTokenExpiry: null } });
         const token = jwt.sign({ userId: updatedUser.id }, process.env.APP_SECRET);
         ctx.response.cookie('token', token, {
             httpOnly: true,
@@ -137,15 +137,44 @@ const Mutations = {
         const user = await ctx.db.query.user({ where: { id: ctx.request.userId } }, info);
         hasPermission(ctx.request.user, ["ADMIN", "PERMISSIONUPDATE"]);
         return ctx.db.mutation.updateUser({
-            data:{
+            data: {
                 permissions: {
                     set: args.permissions
                 }
             },
-            where:{
+            where: {
                 id: args.userId
             }
-        },info);
+        }, info);
+    },
+    async addToCart(parent, args, ctx, info) {
+        const { userId } = ctx.request;
+        if (!userId) {
+            throw new Error('Not logged in');
+        }
+        const [addedItem] = await ctx.db.query.cartItems({
+            where: {
+                user: { id: userId },
+                item: { id: args.id }
+            }
+        });
+        console.log("addedItem", addedItem);
+        if (addedItem) {
+            return await ctx.db.mutation.updateCardItem({
+                where: { id: addedItem.id },
+                data: { quantity: addedItem.quantity + 1 }
+            });
+        }
+        return await ctx.db.mutation.createCartItem({
+            data: {
+                user: {
+                    connect: { id: userId }
+                },
+                item: {
+                    connect: { id: args.id }
+                }
+            }
+        }, info);
     }
 };
 
