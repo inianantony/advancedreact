@@ -174,6 +174,22 @@ const Mutations = {
                 }
             }
         }, info);
+    },
+    async removeFromCart(parent, args, ctx, info) {
+        const { userId } = ctx.request;
+        if (!userId) {
+            throw new Error('Not logged in');
+        }
+        const [addedItem] = await ctx.db.query.cartItems({
+            where: {
+                id: args.id,
+                user: { id: userId }
+            }
+        });
+        if (!addedItem) {
+            throw new Error("No Item found");
+        }
+        return ctx.db.mutation.deleteCartItem({ where:{id:addedItem.id} }, info);
     }
 };
 
