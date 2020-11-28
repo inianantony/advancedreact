@@ -49,31 +49,7 @@ const Permissions = props => (
                                     </thead>
                                     <tbody>
                                         {data.users.map((usr)=>{
-                                            return (
-                                                <tr>
-                                                    <td>{usr.name}</td>
-                                                    <td>{usr.email}</td>
-                                                    {payload.data.permissions.map((per)=>{
-                                                        if(usr.permissions.includes(per)){
-                                                            return (
-                                                                <td>
-                                                                    <label htmlFor={per}>
-                                                                        <input id={per} name={per} type="checkbox" checked/>
-                                                                    </label>
-                                                                 </td>
-                                                            );
-                                                        }
-                                                        return (
-                                                            <td>
-                                                                <label htmlFor={per}>
-                                                                    <input id={per} name={per} type="checkbox"/>
-                                                                </label>
-                                                             </td>
-                                                        );
-                                                    })}
-                                                    <td><SickButton>Update</SickButton></td>
-                                                </tr>
-                                            );
+                                            return <UserPermissionRow key={usr.id} user={usr} permissions={payload.data.permissions} />
                                         })}
                                         
                                     </tbody>
@@ -86,7 +62,28 @@ const Permissions = props => (
             </Query>)
         }}
     </Query>
-
 );
+
+class UserPermissionRow extends React.Component{
+    render(){
+        const {user, permissions} = this.props;
+        return (
+            <tr>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                {permissions.map((per)=>{
+                    return (
+                        <td key={`${user.id}-${per}`}>
+                            <label htmlFor={per}>
+                                <input id={per} name={per} checked={user.permissions.includes(per)} type="checkbox"/>
+                            </label>
+                         </td>
+                    );
+                })}
+                <td><SickButton>Update</SickButton></td>
+            </tr>
+        );
+    }
+}
 
 export default Permissions;
