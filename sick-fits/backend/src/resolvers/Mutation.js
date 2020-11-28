@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const { randomBytes } = require("crypto");
 const { promisify } = require("util");
 const {transport, makeANiceEmail} = require('../mail')
+const { hasPermission } = require("../utils");
 
 
 const Mutations = {
@@ -35,10 +36,27 @@ const Mutations = {
         }, info);
     },
     async deleteItem(parent, args, ctx, info) {
+        if (!ctx.request.userId) {
+            throw new Error('Not logged in');
+        }
+        
         const where = { id: args.id };
-        const item = await ctx.db.query.item({ where }, `{id
-            title}`);
-        return ctx.db.mutation.deleteItem({ where }, info);
+        const item = await ctx.db.query.item({ where }, `{
+            id 
+            title 
+            user { 
+                id 
+            }
+        }`);
+        
+        const ownsIt = item.user.id === ctx.request.userId;
+        const userPermissions = ctx.request.user.permissions;
+        const hasPermission = userPermissions.includes("ADMIN") || userPermissions.includes("ITEMDELETE");
+        if(!ownsIt && !hasPermission) throw new Error("Un Authorized");
+
+        
+        
+        return ctx.db.mutation.deleteItem({ where }, info); 
     },
     async signup(parent, args, ctx, info) {
         args.email = args.email.toLowerCase();
@@ -111,6 +129,23 @@ const Mutations = {
             maxAge: 1000 * 60 * 60 * 24 * 365
         });
         return updatedUser;
+    },
+    async updatePermissions(parent, args, ctx, info) {
+        if (!ctx.request.userId) {
+            throw new Error('Not logged in');
+        }
+        const user = await ctx.db.query.user({ where: { id: ctx.request.userId } }, info);
+        hasPermission(ctx.request.user, ["ADMIN", "PERMISSIONUPDATE"]);
+        return ctx.db.mutation.updateUser({
+            data:{
+                permissions: {
+                    set: args.permissions
+                }
+            },
+            where:{
+                id: args.userId
+            }
+        },info);
     }
 };
 

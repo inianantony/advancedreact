@@ -20,7 +20,6 @@ server.express.use(async (req, res, next) => {
     if (req.userId) {
         const user = await db.query.user({ where: { id: req.userId } }, '{id,name, email, permissions}');
         req.user = user;
-        console.log(user);
     }
     next();
 });

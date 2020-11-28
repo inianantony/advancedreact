@@ -27,12 +27,14 @@ export default class DeleteItem extends Component {
     render() {
         return (
             <Mutation mutation={DELETE_ITEM_MUTATION} variables={{ id: this.props.id }} update={this.updateCache}>
-                {(deletItem, { error }) => (
-                    <button onClick={() => {
-                        if (confirm('Are you sure to delete?'))
-                            deletItem();
-                    }}>{this.props.children}</button>
-                )}
+                {(deleteItem, { error }) => {
+                    return (
+                        <button onClick={() => {
+                            if (confirm('Are you sure to delete?'))
+                                deleteItem().catch(err => alert(err));
+                        }}>{this.props.children}</button>
+                    );
+                }}
             </Mutation>
         );
     }
