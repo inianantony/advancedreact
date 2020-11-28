@@ -5,6 +5,11 @@ import CloseButton from './styles/CloseButton';
 import SickButton from './styles/SickButton';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+import User from './User';
+import CartItems from './CartItems'
+import calcTotalPrice from '../lib/calcTotalPrice';
+import formatMoney from '../lib/formatMoney';
+
 
 const LOCAL_STATE_QUERY = gql`
     query {
@@ -20,31 +25,41 @@ const TOGGLE_CART_MUTATION = gql`
 
 const Cart = () => {
     return (
-        <Mutation mutation={TOGGLE_CART_MUTATION}>
-            {(toggleCart) => {
+        <User>
+            {({ data: { me } }) => {
+                if (!me) return null;
                 return (
-                    <Query query={LOCAL_STATE_QUERY}>
-                        {({data}) => {
+                    <Mutation mutation={TOGGLE_CART_MUTATION}>
+                        {(toggleCart) => {
                             return (
-                                <CartStyles open={data.cartOpen}>
-                                    <header>
-                                        <CloseButton onClick={toggleCart} title="close">&times;</CloseButton>
-                                        <Supreme>Your Cart</Supreme>
-                                        <p>You have __ items in your cart</p>
-                                    </header>
-
-                                    <footer>
-                                        <p>$10.10</p>
-                                        <SickButton>Checkout</SickButton>
-                                    </footer>
-                                </CartStyles>
+                                <Query query={LOCAL_STATE_QUERY}>
+                                    {({ data }) => {
+                                        return (
+                                            <CartStyles open={data.cartOpen}>
+                                                <header>
+                                                    <CloseButton onClick={toggleCart} title="close">&times;</CloseButton>
+                                                    <Supreme>{me.name}'s Cart</Supreme>
+                                                    <p>You have {me.cart.length} item{me.cart.length <= 1 ? "" : "s"} in your cart</p>
+                                                </header>
+                                                <ul>
+                                                    {me.cart.map((itm) => {
+                                                        return <CartItems key={itm.id} cartItem={itm} />
+                                                    })}
+                                                </ul>
+                                                <footer>
+                                                    <p>{formatMoney(calcTotalPrice(me.cart))}</p>
+                                                    <SickButton>Checkout</SickButton>
+                                                </footer>
+                                            </CartStyles>
+                                        );
+                                    }}
+                                </Query>
                             );
                         }}
-                    </Query>
-                );
+                    </Mutation>
+                )
             }}
-        </Mutation>
-
+        </User>
     );
 }
 

@@ -158,9 +158,8 @@ const Mutations = {
                 item: { id: args.id }
             }
         });
-        console.log("addedItem", addedItem);
         if (addedItem) {
-            return await ctx.db.mutation.updateCardItem({
+            return await ctx.db.mutation.updateCartItem({
                 where: { id: addedItem.id },
                 data: { quantity: addedItem.quantity + 1 }
             });
