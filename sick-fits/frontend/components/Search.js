@@ -67,9 +67,14 @@ export default class AutoComplete extends React.Component {
                                 )}
                             </ApolloConsumer>
                             {isOpen && (<DropDown>
-                                {this.state.items.map((item) => {
+                                {this.state.items.map((item, index) => {
                                     return (
-                                        <DropDownItem key={item.id}>
+                                        <DropDownItem
+                                            {...getItemProps({
+                                                item
+                                            })}
+                                            highlighted={index == highlightedIndex}
+                                            key={item.id}>
                                             <img width="50" src={item.image} alt={item.title} />
                                             {item.title}
                                         </DropDownItem>
