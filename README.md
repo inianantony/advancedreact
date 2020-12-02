@@ -63,4 +63,11 @@
 * Create an account in https://mailtrap.io/
 * This mail server can be used to test the email sending logic
 * Take note of the smtp server settings and update in the variables.env file
+
+### Create account in https://dashboard.stripe.com/register
+
+* Stripe will act as our payment gateway to handle the payments for us. They will sent us the token after receiving card info from client
+* We can process the payment after exchanging the token with Stipe and then we can complete the payment in our website
+* Enter all the details to create account in Stripe
+* Take note of your api keys
   
