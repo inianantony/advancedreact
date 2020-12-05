@@ -10,6 +10,7 @@ import CartItems from './CartItems'
 import calcTotalPrice from '../lib/calcTotalPrice';
 import formatMoney from '../lib/formatMoney';
 import { adopt } from 'react-adopt';
+import TakeMyMoney from './TakeMyMoney';
 
 
 const LOCAL_STATE_QUERY = gql`
@@ -50,7 +51,9 @@ const Cart = () => {
                         </ul>
                         <footer>
                             <p>{formatMoney(calcTotalPrice(me.cart))}</p>
+                            <TakeMyMoney>
                             <SickButton>Checkout</SickButton>
+                            </TakeMyMoney>
                         </footer>
                     </CartStyles>            
                 )
