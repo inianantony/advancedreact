@@ -4,6 +4,7 @@ const { randomBytes } = require("crypto");
 const { promisify } = require("util");
 const { transport, makeANiceEmail } = require('../mail')
 const { hasPermission } = require("../utils");
+const stripe = require('../stripe');
 
 
 const Mutations = {
@@ -189,7 +190,64 @@ const Mutations = {
         if (!addedItem) {
             throw new Error("No Item found");
         }
-        return ctx.db.mutation.deleteCartItem({ where:{id:addedItem.id} }, info);
+        return ctx.db.mutation.deleteCartItem({ where: { id: addedItem.id } }, info);
+    },
+    async createOrder(parent, args, ctx, info) {
+        const { userId } = ctx.request;
+        if (!userId) {
+            throw new Error('Not logged in');
+        }
+        const user = await ctx.db.query.user({ where: { id: userId } }, `
+        {
+            id
+            name
+            email
+            cart {
+                id
+                quantity
+                item {
+                    id
+                    title
+                    price
+                    description
+                    image
+                    largeImage
+                }
+            }
+        }
+        `);
+        const amount = user.cart.reduce((total, cartItem) => {
+            return total + cartItem.item.price * cartItem.quantity;
+        }, 0);
+        const charge = await stripe.charges.create({
+            amount,
+            currency: 'USD',
+            source: args.token
+        });
+        const orderItems = user.cart.map((cartItem) => {
+            let orderItem = {
+                quantity: cartItem.quantity,
+                ...cartItem.item,
+                user: { connect: { id: userId } }
+            }
+            delete orderItem.id;
+            return orderItem;
+        });
+        const order = await ctx.db.mutation.createOrder({
+            data: {
+                total: charge.amount,
+                charge: charge.id,
+                items: { create: orderItems },
+                user: { connect: { id: userId } }
+            }
+        });
+        const cartItemIds = user.cart.map(cartItem => cartItem.id);
+        await ctx.db.mutation.deleteManyCartItems({
+            where: {
+                id_in: cartItemIds
+            }
+        });
+        return order;
     }
 };
 
