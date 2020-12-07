@@ -33,10 +33,14 @@ const CREATE_ORDER_MUTATION = gql`
 
 export default class TakeMyMoney extends React.Component {
     onToken = async (resp, createOrder) => {
+        NProgress.start();
         const order = await createOrder({variables:{
             token:resp.id
         }}).catch(err=> alert(err));
-        console.log(order);
+        Router.push({
+            pathname : '/order',
+            query: {id: order.data.createOrder.id}
+        });
     }
     render() {
         return (
