@@ -26,18 +26,18 @@ const TOGGLE_CART_MUTATION = gql`
 `;
 
 const Composed = adopt({
-    user : ({render}) => <User>{render}</User>,
-    toggleCart : ({render}) => <Mutation mutation={TOGGLE_CART_MUTATION}>{render}</Mutation>,
-    localState: ({render}) => <Query query={LOCAL_STATE_QUERY}>{render}</Query>
+    user: ({ render }) => <User>{render}</User>,
+    toggleCart: ({ render }) => <Mutation mutation={TOGGLE_CART_MUTATION}>{render}</Mutation>,
+    localState: ({ render }) => <Query query={LOCAL_STATE_QUERY}>{render}</Query>
 })
 
 const Cart = () => {
     return (
         <Composed>
-            {({ user, toggleCart, localState}) => {
+            {({ user, toggleCart, localState }) => {
                 const me = user.data.me;
                 if (!me) return null;
-                return (     
+                return (
                     <CartStyles open={localState.data.cartOpen}>
                         <header>
                             <CloseButton onClick={toggleCart} title="close">&times;</CloseButton>
@@ -50,12 +50,19 @@ const Cart = () => {
                             })}
                         </ul>
                         <footer>
-                            <p>{formatMoney(calcTotalPrice(me.cart))}</p>
-                            <TakeMyMoney>
-                            <SickButton>Checkout</SickButton>
-                            </TakeMyMoney>
+                            {
+                                me.cart.length > 0 && (
+                                    <>
+                                        <p>{formatMoney(calcTotalPrice(me.cart))}</p>
+                                        <TakeMyMoney>
+                                            <SickButton>Checkout</SickButton>
+                                        </TakeMyMoney>
+                                    </>
+                                )
+                            }
+
                         </footer>
-                    </CartStyles>            
+                    </CartStyles>
                 )
             }}
         </Composed>
