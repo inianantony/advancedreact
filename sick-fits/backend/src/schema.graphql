@@ -21,6 +21,7 @@ type Query {
     me: User
     users: [User!]!
     permissions: [String]!
+    order(id:ID!): Order
 }
 
 type SuccessMessage {

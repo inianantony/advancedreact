@@ -26,11 +26,25 @@ const Query = {
         const query = `query{__type(name: "Permission") { enumValues{name}}}`;
         const variables = {};
         const permissionsList = await ctx.db.request(query, variables);
-        const allPermission = permissionsList.data.__type.enumValues.map((per)=>{
+        const allPermission = permissionsList.data.__type.enumValues.map((per) => {
             return per.name;
         });
         return allPermission;
-    }
+    },
+    async order(parent, args, ctx, info) {
+        if (!ctx.request.userId) {
+            throw new Error('Not logged in');
+        }
+        const order = await ctx.db.query.order({
+            where: { id: args.id }
+        }, info);
+        const ownOrder = order.user.id === ctx.request.userId;
+        const hasPrivilege = hasPermission(ctx.request.user, ["ADMIN"]);
+        if(!hasPrivilege && !ownOrder){
+            throw new Error('Order not found');
+        }
+        return order;
+    },
 };
 
 module.exports = Query;
