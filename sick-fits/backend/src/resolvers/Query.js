@@ -50,7 +50,7 @@ const Query = {
             throw new Error('Not logged in');
         }
         return await ctx.db.query.orders({
-            where: { user: { id: tx.request.userId } }
+            where: { user: { id: ctx.request.userId } }
         }, info);
     },
 };

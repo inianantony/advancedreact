@@ -38,7 +38,7 @@ const SINGLE_ORDER_QUERY = gql`
     }
 `;
 
-export default class TakeMyMoney extends React.Component {
+export default class Order extends React.Component {
     static propTypes = {
         id: PropTypes.string.isRequired
     }

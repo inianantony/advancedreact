@@ -22,7 +22,7 @@ type Query {
     users: [User!]!
     permissions: [String]!
     order(id:ID!): Order
-    orders(where: OrderWhereInput): [Order]!
+    orders(orderBy: OrderOrderByInput): [Order]!
 }
 
 type SuccessMessage {
