@@ -1,6 +1,4 @@
 import { Query, Mutation } from 'react-apollo';
-import { CURRENT_USER_QUERY } from './User';
-import SignIn from './SignIn';
 import Error from './ErrorMessage'
 import gql from 'graphql-tag';
 import Table from './styles/Table'

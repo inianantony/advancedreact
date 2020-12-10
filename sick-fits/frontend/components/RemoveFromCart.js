@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
-import { Query, Mutation } from 'react-apollo';
+import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { CURRENT_USER_QUERY } from './User';
-import CartStyles from './styles/CartStyles';
-import Supreme from './styles/Supreme';
-import CloseButton from './styles/CloseButton';
-import SickButton from './styles/SickButton';
-import User from './User';
-import CartItems from './CartItems'
-import calcTotalPrice from '../lib/calcTotalPrice';
-import formatMoney from '../lib/formatMoney';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 

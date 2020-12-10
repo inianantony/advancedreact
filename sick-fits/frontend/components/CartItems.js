@@ -1,10 +1,6 @@
-import React, { Component } from 'react';
-import { Query, Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
-import { ALL_ITEMS_QUERY } from './items';
+import React from 'react';
 import formatMoney from '../lib/formatMoney';
 import styled from 'styled-components';
-import { object } from 'prop-types';
 import PropTypes from 'prop-types';
 import RemoveFromCart from './RemoveFromCart';
 
