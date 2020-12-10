@@ -15,7 +15,7 @@ const mocks = [{
 }];
 
 describe("<RequestReset/>", () => {
-    it("renders and match snapshot", async () => {
+    it("renders and match snapshot", () => {
         const wrapper = mount(
             <MockedProvider>
                 <RequestReset />
