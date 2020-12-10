@@ -31,5 +31,5 @@ describe("<Item/>",()=>{
         expect(buttonList.find("Link")).toHaveLength(1);
         expect(buttonList.find("AddToCart").exists()).toBeTruthy;
         expect(buttonList.find("DeleteItem").exists()).toBe(true);
-    })
+    });
 });
