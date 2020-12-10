@@ -14,11 +14,6 @@ const fakeItem = {
 describe("<Item/>",()=>{
     it("renders and displays properly", ()=>{
         const wrapper = shallow(<ItemComponent item={fakeItem}/>);
-        const priceTag = wrapper.find('PriceTag');
-        const title = wrapper.find('Title a');
-        const img = wrapper.find('img');
-
-        expect(toJSON(wrapper)).toMatchSnapshot();
-       
+        expect(toJSON(wrapper)).toMatchSnapshot();       
     });
 });

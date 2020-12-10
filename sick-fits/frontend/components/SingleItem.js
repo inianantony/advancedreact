@@ -17,7 +17,7 @@ const SINGLE_ITEM_QUERY = gql`
     }
 `;
 
-const SingleItemStyle = styled.div`
+const SingleItemStyles = styled.div`
     max-width: 1200px;
     margin: 2rem auto; 
     box-shadow: ${props => props.theme.bs};
@@ -45,13 +45,16 @@ export default class SingleItem extends Component {
                 if (!data.item) return <p>No Item found for {this.props.id}...</p>
                 const item = data.item;
                 return (
-                    <SingleItemStyle>
+                    <SingleItemStyles>
                         <Head>
                             <title>Sick Fits | {item.title}</title>
                         </Head>
                         <img src={item.largeImage} alt={item.title} />
-                        <h2>Viewing {item.title}</h2>
-                    </SingleItemStyle>
+                        <div className="details">
+                            <h2>Viewing {item.title}</h2>
+                            <p>{item.description}</p>
+                        </div>
+                    </SingleItemStyles>
                 )
             }}
         </Query>
@@ -59,3 +62,5 @@ export default class SingleItem extends Component {
         );
     }
 }
+
+export { SINGLE_ITEM_QUERY };

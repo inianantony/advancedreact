@@ -26,7 +26,7 @@ describe("<Item/>",()=>{
     it("renders the button properly",()=>{
         const wrapper = shallow(<ItemComponent item={fakeItem}/>);
         const buttonList = wrapper.find(".buttonList");
-        console.log(buttonList.debug());
+
         expect(buttonList.children().length).toBe(3);
         expect(buttonList.find("Link")).toHaveLength(1);
         expect(buttonList.find("AddToCart").exists()).toBeTruthy;
