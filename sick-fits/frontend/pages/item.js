@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import SingleItem from '../components/SingleItem'
 
 const Item = props => (
