@@ -47,3 +47,5 @@ export default class RequestReset extends Component {
         );
     }
 }
+
+export { REQUEST_RESET_MUTATION };
