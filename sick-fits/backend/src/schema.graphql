@@ -22,6 +22,7 @@ type Query {
     users: [User!]!
     permissions: [String]!
     order(id:ID!): Order
+    orders(where: OrderWhereInput): [Order]!
 }
 
 type SuccessMessage {

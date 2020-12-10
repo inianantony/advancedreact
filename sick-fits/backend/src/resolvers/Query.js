@@ -40,10 +40,18 @@ const Query = {
         }, info);
         const ownOrder = order.user.id === ctx.request.userId;
         const hasPrivilege = hasPermission(ctx.request.user, ["ADMIN"]);
-        if(!hasPrivilege && !ownOrder){
+        if (!hasPrivilege && !ownOrder) {
             throw new Error('Order not found');
         }
         return order;
+    },
+    async orders(parent, args, ctx, info) {
+        if (!ctx.request.userId) {
+            throw new Error('Not logged in');
+        }
+        return await ctx.db.query.orders({
+            where: { user: { id: tx.request.userId } }
+        }, info);
     },
 };
 
