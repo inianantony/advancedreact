@@ -1,10 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import Form from './styles/Form';
-import Error from './ErrorMessage'
-import Router from 'next/router'
-import styled from 'styled-components'
 import { CURRENT_USER_QUERY } from './User'
 
 const SIGNOUT_MUTATION = gql`

@@ -1,17 +1,9 @@
 import React from 'react';
-import CartStyles from './styles/CartStyles';
-import Supreme from './styles/Supreme';
-import CloseButton from './styles/CloseButton';
-import SickButton from './styles/SickButton';
-import { Query, Mutation } from 'react-apollo';
+import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import User from './User';
-import CartItems from './CartItems'
 import Error from './ErrorMessage'
 import OrderStyles from './styles/OrderStyles'
-import calcTotalPrice from '../lib/calcTotalPrice';
 import formatMoney from '../lib/formatMoney';
-import { adopt } from 'react-adopt';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 import Head from 'next/head';

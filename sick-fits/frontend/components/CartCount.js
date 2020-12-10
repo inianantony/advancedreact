@@ -1,17 +1,5 @@
-import React, { Component } from 'react';
-import { Query, Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
-import { CURRENT_USER_QUERY } from './User';
-import CartStyles from './styles/CartStyles';
-import Supreme from './styles/Supreme';
-import CloseButton from './styles/CloseButton';
-import SickButton from './styles/SickButton';
-import User from './User';
-import CartItems from './CartItems'
-import calcTotalPrice from '../lib/calcTotalPrice';
-import formatMoney from '../lib/formatMoney';
+import React from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 const AnimationStyles = styled.span`
