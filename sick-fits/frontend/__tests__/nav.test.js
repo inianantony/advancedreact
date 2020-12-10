@@ -37,8 +37,6 @@ describe("<Nav/>", () => {
         );
         await wait();
         wrapper.update();
-        console.log(wrapper.debug());
-        console.log(wrapper.find('NavStyles').debug());
         wrapper.find('NavStyles')
         expect(toJSON(wrapper.find('Link'))).toMatchSnapshot();
     });
