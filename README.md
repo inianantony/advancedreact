@@ -85,6 +85,7 @@
 * Add the environment variables into heroku app using the UI
 * Go to the root folder first and then push the backend to heroku using subtree `git subtree push --prefix sick-fits/backend/ heroku-backend master`
 * View logs by `heroku logs --tail --app sickfits-ai-yoga-prod`
+* Deploy again by `git subtree push --prefix sick-fits/backend/ heroku-backend master`
 
 #### Frontend Deploy
 

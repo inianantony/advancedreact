@@ -88,7 +88,7 @@ const Mutations = {
         const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
         ctx.response.cookie('token', token, {
             httpOnly: true,
-            sameSite: true,
+            domain: '.herokuapp.com',
             maxAge: 1000 * 60 * 60 * 24 * 365
         });
         return user;
