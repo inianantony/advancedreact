@@ -55,3 +55,5 @@ export default class SignIn extends Component {
         );
     }
 }
+
+export { SIGNIN_MUTATION };

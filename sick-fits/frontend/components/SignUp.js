@@ -61,3 +61,5 @@ export default class SignUp extends Component {
         );
     }
 }
+
+export { SIGNUP_MUTATION };

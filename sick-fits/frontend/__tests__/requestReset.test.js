@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
-import Router from 'next/router';
 import RequestReset, { REQUEST_RESET_MUTATION } from '../components/RequestReset';
 import { MockedProvider } from 'react-apollo/test-utils';
 import toJSON from 'enzyme-to-json';
