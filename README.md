@@ -1,5 +1,7 @@
 # Advanced React & GraphQL
 
+![Certificate Of Completion](https://github.com/inianantony/advancedreact/blob/main/Certificate_of_Completion.png?raw=true)
+
 ## Introduction & Setup
 
 ### Preliminary Steps
