@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
-import Router from 'next/router';
 import SignUp, { SIGNUP_MUTATION } from '../components/SignUp';
 import { CURRENT_USER_QUERY } from '../components/User';
 import { MockedProvider } from 'react-apollo/test-utils';
