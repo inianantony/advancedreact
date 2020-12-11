@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AddToCart/> renders and matches the snap shot 1`] = `
+<OrderStyles>
+  <div
+    className="OrderStyles-sc-4oqalm-0 camMij"
+  >
+    <SideEffect(Head)>
+      <Head />
+    </SideEffect(Head)>
+    <p>
+      <span>
+         Order Id : 
+      </span>
+      <span>
+        ord123
+      </span>
+    </p>
+    <p>
+      <span>
+         Charge : 
+      </span>
+      <span>
+        ch_123
+      </span>
+    </p>
+    <p>
+      <span>
+         Date : 
+      </span>
+      <span>
+        April 1, 2018 8:00 AM
+      </span>
+    </p>
+    <p>
+      <span>
+         Order Total : 
+      </span>
+      <span>
+        $400
+      </span>
+    </p>
+    <p>
+      <span>
+         Item Count : 
+      </span>
+      <span>
+        2
+      </span>
+    </p>
+    <div
+      className="items"
+    >
+      <div
+        className="order-item"
+        key="0618965f-eea6-4ae8-b415-d3f23683393e"
+      >
+        <img
+          alt="dolorum ab aliquam id sit delectus vel"
+          src="illo.jpg"
+        />
+        <div
+          className="item-details"
+        >
+          <h2>
+            dolorum ab aliquam id sit delectus vel
+          </h2>
+          <p>
+            Qty: 
+            1
+          </p>
+          <p>
+            Each: 
+            $42.34
+          </p>
+          <p>
+            SubTotal: 
+            $42.34
+          </p>
+          <p>
+            ipsa tempora aut sint aperiam occaecati illum
+          </p>
+        </div>
+      </div>
+      <div
+        className="order-item"
+        key="8d81098d-fec8-4184-b94b-e78c1398f8e7"
+      >
+        <img
+          alt="temporibus aliquam sed sapiente soluta corporis commodi"
+          src="similique.jpg"
+        />
+        <div
+          className="item-details"
+        >
+          <h2>
+            temporibus aliquam sed sapiente soluta corporis commodi
+          </h2>
+          <p>
+            Qty: 
+            1
+          </p>
+          <p>
+            Each: 
+            $42.34
+          </p>
+          <p>
+            SubTotal: 
+            $42.34
+          </p>
+          <p>
+            eaque nisi cum ducimus nemo doloremque maiores
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</OrderStyles>
+`;
