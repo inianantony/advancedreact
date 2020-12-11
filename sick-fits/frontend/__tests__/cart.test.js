@@ -1,12 +1,10 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
-import Router from 'next/router';
 import Cart, { LOCAL_STATE_QUERY } from '../components/Cart';
 import { CURRENT_USER_QUERY } from '../components/User';
 import { MockedProvider } from 'react-apollo/test-utils';
 import toJSON from 'enzyme-to-json';
 import { fakeCartItem, fakeUser } from '../lib/testUtils';
-import { ApolloConsumer } from 'react-apollo';
 
 const mocks = [
     {
