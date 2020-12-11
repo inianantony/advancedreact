@@ -109,4 +109,3 @@ dist
 .DS_Store
 */.DS_Store
 */*/.DS_Store
-sick-fits/backend/variables.env
