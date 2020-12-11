@@ -74,8 +74,20 @@
 ### Create account in heroku
 
 * Download the CLI and login using `heroku login`
-* Create the app using the command `heroku apps:create sickfits-yoga-prod`
+  
+#### Backend Deploy
+
+* Create the app using the command `heroku apps:create sickfits-ai-yoga-prod`
 * Get the git remote url using `git remote -v`
 * To deploy sub-folder we need to add more remotes `git remote add heroku-backend https://git.heroku.com/sickfits-ai-yoga-prod.git` and verify by `git remote -v`
 * Add the environment variables into heroku app using the UI
-* Push the backend to heroku using subtree `git subtree push --prefix backend heroku-backend master`
+* Go to the root folder first and then push the backend to heroku using subtree `git subtree push --prefix sick-fits/backend/ heroku-backend master`
+* View logs by `heroku logs --tail --app sickfits-ai-yoga-prod`
+
+#### Frontend Deploy
+
+* Create the app using the command `heroku apps:create sickfits-ai-next-prod`
+* Get the git remote url using `git remote -v`
+* To deploy sub-folder we need to add more remotes `git remote add heroku-frontend https://git.heroku.com/sickfits-ai-next-prod.git` and verify by `git remote -v`
+* Go to the root folder first and then push the frontend to heroku using subtree `git subtree push --prefix sick-fits/frontend/ heroku-frontend master`
+* View logs by `heroku logs --tail --app sickfits-ai-next-prod`
