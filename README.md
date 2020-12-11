@@ -70,4 +70,12 @@
 * We can process the payment after exchanging the token with Stipe and then we can complete the payment in our website
 * Enter all the details to create account in Stripe
 * Take note of your api keys
-  
+
+### Create account in heroku
+
+* Download the CLI and login using `heroku login`
+* Create the app using the command `heroku apps:create sickfits-yoga-prod`
+* Get the git remote url using `git remote -v`
+* To deploy sub-folder we need to add more remotes `git remote add heroku-backend https://git.heroku.com/sickfits-ai-yoga-prod.git` and verify by `git remote -v`
+* Add the environment variables into heroku app using the UI
+* Push the backend to heroku using subtree `git subtree push --prefix backend heroku-backend master`
