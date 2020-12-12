@@ -39,5 +39,5 @@ server.start({
         origin: process.env.FRONTEND_URL,
     },
 }, deets => {
-    console.log(`Server is now running on port https://localhost:${deets.port}`)
+    console.log(`Server is now running on port http${process.env.NODE_ENV == "dev" ? "s" : ""}://localhost:${deets.port}`)
 })
