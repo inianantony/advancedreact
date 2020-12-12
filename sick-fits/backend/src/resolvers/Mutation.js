@@ -14,14 +14,7 @@ const Mutations = {
         }
 
         const item = await ctx.db.mutation.createItem({
-            data: {
-                user: {
-                    connect: {
-                        id: ctx.request.userId
-                    }
-                },
-                ...args
-            }
+            data: { user: { connect: { id: ctx.request.userId } }, ...args }
         }, info);
 
         return item;
@@ -31,9 +24,7 @@ const Mutations = {
         delete updates.id;
         return ctx.db.mutation.updateItem({
             data: updates,
-            where: {
-                id: args.id
-            }
+            where: { id: args.id }
         }, info);
     },
     async deleteItem(parent, args, ctx, info) {
@@ -70,7 +61,7 @@ const Mutations = {
             }
         }, info);
         const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
-        ctx.response.cookie('token', token, { sameSite: "none", secure: true, maxAge: 1000 * 60 * 60 * 24 * 365 });
+        ctx.response.cookie('token', token, { httpOnly: true, sameSite: "none", secure: true, maxAge: 1000 * 60 * 60 * 24 * 365 });
         return user;
     },
     async signin(parent, args, ctx, info) {
@@ -83,7 +74,7 @@ const Mutations = {
             throw new Error("Invalid Email or Password!");
         }
         const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
-        ctx.response.cookie('token', token, { sameSite: "none", secure: true, maxAge: 1000 * 60 * 60 * 24 * 365 });
+        ctx.response.cookie('token', token, { httpOnly: true, sameSite: "none", secure: true, maxAge: 1000 * 60 * 60 * 24 * 365 });
         return user;
     },
     async signout(parent, args, ctx, info) {
@@ -119,7 +110,7 @@ const Mutations = {
         const password = await bcrypt.hash(args.password, 10);
         const updatedUser = await ctx.db.mutation.updateUser({ where: { email: user.email }, data: { password, resetToken: null, resetTokenExpiry: null } });
         const token = jwt.sign({ userId: updatedUser.id }, process.env.APP_SECRET);
-        ctx.response.cookie('token', token, { sameSite: "none", secure: true, maxAge: 1000 * 60 * 60 * 24 * 365 });
+        ctx.response.cookie('token', token, { httpOnly: true, sameSite: "none", secure: true, maxAge: 1000 * 60 * 60 * 24 * 365 });
         return updatedUser;
     },
     async updatePermissions(parent, args, ctx, info) {
