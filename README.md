@@ -94,6 +94,7 @@
 * To deploy sub-folder we need to add more remotes `git remote add heroku-frontend https://git.heroku.com/sickfits-ai-next-prod.git` and verify by `git remote -v`
 * Go to the root folder first and then push the frontend to heroku using subtree `git subtree push --prefix sick-fits/frontend/ heroku-frontend master`
 * View logs by `heroku logs --tail --app sickfits-ai-next-prod`
+* Deploy again by `git subtree push --prefix sick-fits/frontend/ heroku-frontend master`
 
 #### Generate Cert for backend
 
