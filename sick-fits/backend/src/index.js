@@ -1,8 +1,11 @@
 require('dotenv').config({ path: 'variables.env' });
+const https = require('https')
 const createServer = require('./createServer');
 const cookieParser = require('cookie-parser');
 const db = require('./db');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+
 const server = createServer();
 
 server.express.use(cookieParser());
@@ -25,10 +28,14 @@ server.express.use(async (req, res, next) => {
 });
 
 server.start({
+    https: {
+        key: fs.readFileSync('server.key'),
+        cert: fs.readFileSync('server.cert')
+    },
     cors: {
         credentials: true,
         origin: process.env.FRONTEND_URL,
     },
 }, deets => {
-    console.log(`Server is now running on port http://localhost:${deets.port}`)
+    console.log(`Server is now running on port https://localhost:${deets.port}`)
 })

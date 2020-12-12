@@ -70,10 +70,7 @@ const Mutations = {
             }
         }, info);
         const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
-        ctx.response.cookie('token', token, {
-            httpOnly: true,
-            maxAge: 1000 * 60 * 60 * 24 * 365
-        });
+        ctx.response.cookie('token', token, { sameSite: "none", secure: true, maxAge: 1000 * 60 * 60 * 24 * 365 });
         return user;
     },
     async signin(parent, args, ctx, info) {
@@ -86,12 +83,7 @@ const Mutations = {
             throw new Error("Invalid Email or Password!");
         }
         const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
-        ctx.response.cookie('token', token, {
-            httpOnly: true,
-            sameSite: 'None',
-            secure: true,
-            maxAge: 1000 * 60 * 60 * 24 * 365
-        });
+        ctx.response.cookie('token', token, { sameSite: "none", secure: true, maxAge: 1000 * 60 * 60 * 24 * 365 });
         return user;
     },
     async signout(parent, args, ctx, info) {
@@ -127,10 +119,7 @@ const Mutations = {
         const password = await bcrypt.hash(args.password, 10);
         const updatedUser = await ctx.db.mutation.updateUser({ where: { email: user.email }, data: { password, resetToken: null, resetTokenExpiry: null } });
         const token = jwt.sign({ userId: updatedUser.id }, process.env.APP_SECRET);
-        ctx.response.cookie('token', token, {
-            httpOnly: true,
-            maxAge: 1000 * 60 * 60 * 24 * 365
-        });
+        ctx.response.cookie('token', token, { sameSite: "none", secure: true, maxAge: 1000 * 60 * 60 * 24 * 365 });
         return updatedUser;
     },
     async updatePermissions(parent, args, ctx, info) {
