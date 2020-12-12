@@ -27,11 +27,13 @@ server.express.use(async (req, res, next) => {
     next();
 });
 
+const httpsOptions = process.env.NODE_ENV == "dev" ? {
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+} : undefined;
+
 server.start({
-    https: {
-        key: fs.readFileSync('server.key'),
-        cert: fs.readFileSync('server.cert')
-    },
+    https: httpsOptions,
     cors: {
         credentials: true,
         origin: process.env.FRONTEND_URL,
